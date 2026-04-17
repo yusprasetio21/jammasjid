@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MasjidScreen — Masjid Jami Al Ikhlas Petukangan Selatan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Amiri:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Teko:wght@300;400;500;600;700&family=Monoton&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/5 px-4 py-3">
+    <div class="max-w-[2000px] mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
+                <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            </div>
+            <div class="hidden sm:block">
+                <h1 class="font-cinzel text-base font-semibold tracking-wide">MASJIDSCREEN</h1>
+                <p class="text-[10px] text-white/40 tracking-widest uppercase">Masjid Jami Al Ikhlas</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Status Indicator -->
+            <div id="statusIndicator" class="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 border border-white/10">
+                <span id="statusDot" class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span id="statusText" class="text-[10px] text-white/50">Normal</span>
+            </div>
+
+            <!-- Language Selector -->
+            <select id="langSelect" class="bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-amber-500/50 cursor-pointer custom-select">
+                <option value="id">Indonesia</option>
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
+
+            <!-- Fullscreen Button -->
+            <button id="fullscreenBtn" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-500/50 transition-all" title="Fullscreen">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+            </button>
+
+            <!-- Settings Button -->
+            <button id="settingsBtn" class="p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all" title="Settings">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Settings Overlay -->
+<div class="settings-overlay" id="settingsOverlay"></div>
+
+<!-- Settings Panel -->
+<aside class="settings-panel" id="settingsPanel" role="dialog" aria-label="Settings">
+    <div class="p-5">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="font-cinzel text-xl text-amber-400">Pengaturan</h2>
+            <button id="closeSettings" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- ==================== MOSQUE NAME & DATE SETTINGS ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 21H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-3h2l2 3h4a2 2 0 012 2v12a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Nama Masjid & Tanggal</span>
+            </div>
+
+            <!-- Mosque Name -->
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Indonesia)</label>
+                <input type="text" id="mosqueNameInput" value="Masjid Jami Al Ikhlas Petukangan Selatan" 
+                       class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3">
+                
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Arab)</label>
+                <input type="text" id="mosqueNameArabicInput" value="مَسْجِد جَامِع الإِخْلَاص" 
+                       class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3 font-amiri text-right" dir="rtl">
+                
+                <!-- Mosque Name Font -->
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Nama Masjid</label>
+                <select id="mosqueNameFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
+                    <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+                    <option value="'Cinzel', serif">Cinzel</option>
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Tajawal', sans-serif">Tajawal</option>
+                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
+                </select>
+
+                <!-- Mosque Name Size -->
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Nama Masjid</label>
+                    <span id="mosqueNameSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
+                </div>
+                <input type="range" id="mosqueNameSize" min="0.5" max="3" step="0.1" value="1" class="w-full">
+            </div>
+
+            <!-- Date Settings -->
+            <div class="border-t border-white/5 pt-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Tanggal & Hari</label>
+                <select id="dateFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
+                    <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+                    <option value="'Cinzel', serif">Cinzel</option>
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Tajawal', sans-serif">Tajawal</option>
+                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
+                </select>
+
+                <!-- Date Size -->
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Tanggal & Hari</label>
+                    <span id="dateSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
+                </div>
+                <input type="range" id="dateSize" min="0.5" max="2.5" step="0.1" value="1" class="w-full">
+
+                <!-- Date Opacity -->
+                <div class="flex items-center justify-between mt-3">
+                    <span class="text-sm text-white/70">Transparansi Tanggal</span>
+                    <div class="toggle-switch" id="toggleDateOpacity"></div>
+                </div>
+
+                <!-- Date Color -->
+                <div class="mt-4">
+                    <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Tanggal & Hari</label>
+                    <select id="dateColor" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
+                        <option value="#ffffff">Putih Terang</option>
+                        <option value="#F5D78A">Emas Cerah</option>
+                        <option value="#7DE9B5">Tosca Terang</option>
+                        <option value="#80DFFF">Biru Terang</option>
+                        <option value="#F3FF7D">Kuning Cerah</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CLOCK TYPE SELECTION ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+                <span>Tipe Jam Utama</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btnClockDigital" class="clock-type-btn active p-4 rounded-xl border-2 border-amber-500/50 bg-amber-500/10 text-sm font-medium flex flex-col items-center gap-2">
+                    <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+                    <span>Digital</span>
+                </button>
+                <button id="btnClockAnalog" class="clock-type-btn p-4 rounded-xl border-2 border-white/10 hover:border-white/30 text-sm font-medium text-white/60 flex flex-col items-center gap-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span>Analog</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Digital Clock Settings -->
+        <div id="digitalClockSettings" class="settings-section">
+            <div class="settings-section-title"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/></svg><span>Jam Digital</span></div>
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font</label>
+                <select id="digitalFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
+                    <option value="'Orbitron', monospace">Orbitron</option>
+                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
+                    <option value="'Teko', sans-serif">Teko</option>
+                    <option value="'Monoton', cursive">Monoton</option>
+                    <option value="'Cinzel', serif">Cinzel</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran</label>
+                    <span id="digitalFontSizeValue" class="text-xs text-amber-400 font-mono">6.5rem</span>
+                </div>
+                <input type="range" id="digitalFontSize" min="2" max="15" step="0.5" value="6.5" class="w-full">
+                <div class="preview-box mt-3"><p class="text-[10px] text-white/30 mb-1">PREVIEW</p><p id="digitalFontPreview" class="preview-time clock-custom-font" style="color:#C9A84C;">12:34:56</p></div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <span class="text-sm text-white/70">Tampilkan Detik</span>
+                <div class="toggle-switch active" id="toggleSeconds"></div>
+            </div>
+        </div>
+
+        <!-- Analog Clock Settings -->
+        <div id="analogClockSettings" class="settings-section hidden">
+            <div class="settings-section-title"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg><span>Jam Analog</span></div>
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Gaya Angka</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="analog-number-btn active p-2 rounded-lg border border-amber-500/50 bg-amber-500/10 text-sm" data-style="arabic"><span class="block text-lg">12</span><span class="text-[10px] text-white/50">Arab</span></button>
+                    <button class="analog-number-btn p-2 rounded-lg border border-white/10 text-sm text-white/60" data-style="roman"><span class="block text-lg font-cinzel">XII</span><span class="text-[10px] text-white/50">Romawi</span></button>
+                    <button class="analog-number-btn p-2 rounded-lg border border-white/10 text-sm text-white/60" data-style="hindi"><span class="block text-lg font-amiri">١٢</span><span class="text-[10px] text-white/50">Hijriyah</span></button>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Ukuran</label>
+                <div class="grid grid-cols-5 gap-2">
+                    <button class="analog-size-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-size="140">XS</button>
+                    <button class="analog-size-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-size="170">SM</button>
+                    <button class="analog-size-btn active p-2 rounded-lg border border-amber-500/50 bg-amber-500/10 text-xs" data-size="200">MD</button>
+                    <button class="analog-size-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-size="240">LG</button>
+                    <button class="analog-size-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-size="280">XL</button>
+                    <button class="analog-size-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-size="350">XXL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PRAYER SCHEDULE SETTINGS ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Jadwal Sholat & Sidebar</span>
+            </div>
+
+            <!-- Source Mode -->
+            <div class="mb-4 pb-4 border-b border-white/5">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Mode Jadwal</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="btnPrayerAuto" class="prayer-source-btn active p-3 rounded-lg border border-amber-500/50 bg-amber-500/10 text-sm font-medium">
+                        <span>Otomatis</span>
+                        <p class="text-[10px] text-white/40 mt-1">Deteksi waktu sholat</p>
+                    </button>
+                    <button id="btnPrayerManual" class="prayer-source-btn p-3 rounded-lg border border-white/10 text-sm font-medium text-white/60">
+                        <span>Manual</span>
+                        <p class="text-[10px] text-white/40 mt-1">Setel sendiri</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prayer Times List (Editable in Manual Mode) -->
+            <div id="prayerTimesEditor" class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Waktu Sholat</label>
+                    <button id="addPrayerTimeBtn" class="text-[10px] px-2 py-1 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all">
+                        + Tambah
+                    </button>
+                </div>
+                <div id="prayerTimesList" class="space-y-2 max-h-48 overflow-y-auto">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Sidebar Width -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Lebar Kolom Kanan</label>
+                    <span id="sidebarWidthValue" class="text-xs text-amber-400 font-mono">38%</span>
+                </div>
+                <input type="range" id="sidebarWidthSlider" min="25" max="50" step="1" value="38" class="w-full">
+            </div>
+
+            <!-- Card Color -->
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Card Sholat</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="card-color-btn active w-full aspect-square rounded-lg border-2 border-amber-500/50" style="background: rgba(201,168,76,0.08);" data-bg="rgba(201,168,76,0.08)" data-border="rgba(201,168,76,0.2)" title="Emas"></button>
+                    <button class="card-color-btn w-full aspect-square rounded-lg border-2 border-white/10 hover:border-white/30" style="background: rgba(59,130,246,0.1);" data-bg="rgba(59,130,246,0.1)" data-border="rgba(59,130,246,0.3)" title="Biru"></button>
+                    <button class="card-color-btn w-full aspect-square rounded-lg border-2 border-white/10 hover:border-white/30" style="background: rgba(16,185,129,0.1);" data-bg="rgba(16,185,129,0.1)" data-border="rgba(16,185,129,0.3)" title="Hijau"></button>
+                    <button class="card-color-btn w-full aspect-square rounded-lg border-2 border-white/10 hover:border-white/30" style="background: rgba(139,92,246,0.1);" data-bg="rgba(139,92,246,0.1)" data-border="rgba(139,92,246,0.3)" title="Ungu"></button>
+                </div>
+            </div>
+
+            <!-- Show Sidebar Toggle -->
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <span class="text-sm text-white/70">Tampilkan Kolom Jadwal</span>
+                <div class="toggle-switch active" id="toggleSidebar"></div>
+            </div>
+        </div>
+
+        <!-- ==================== IQOMAH MODE SETTINGS ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Mode Adhan & Iqomah</span>
+            </div>
+
+            <!-- Enable Modes -->
+            <div class="space-y-3 mb-4 pb-4 border-b border-white/5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-sm text-white/70">Mode Adhan</span>
+                        <p class="text-[10px] text-white/35">Tampil "ADHAN" sebelum iqomah</p>
+                    </div>
+                    <div class="toggle-switch active" id="toggleAdhanMode"></div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-sm text-white/70">Mode Iqomah Fullscreen</span>
+                        <p class="text-[10px] text-white/35">Layar hitam + countdown merah</p>
+                    </div>
+                    <div class="toggle-switch active" id="toggleIqomahMode"></div>
+                </div>
+            </div>
+
+            <!-- Adhan Duration -->
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Durasi Tampil Adhan (sebelum Iqomah)</label>
+                <select id="adhanDuration" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
+                    <option value="120">2 menit</option>
+                    <option value="180" selected>3 menit</option>
+                    <option value="300">5 menit</option>
+                </select>
+            </div>
+
+            <!-- Iqomah Font -->
+            <div class="mb-4">
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Countdown Iqomah</label>
+                <select id="iqomahFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
+                    <option value="'Orbitron', monospace">Orbitron</option>
+                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
+                    <option value="'Teko', sans-serif">Teko</option>
+                    <option value="'Monoton', cursive">Monoton</option>
+                </select>
+            </div>
+
+            <!-- Iqomah Font Size -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Font Iqomah</label>
+                    <span id="iqomahFontSizeValue" class="text-xs text-red-400 font-mono">12rem</span>
+                </div>
+                <input type="range" id="iqomahFontSize" min="4" max="20" step="0.5" value="12" class="w-full">
+                <div class="preview-box mt-3" style="background:rgba(0,0,0,0.7);border-color:rgba(220,38,38,0.3);">
+                    <p class="text-[10px] text-white/30 mb-1">PREVIEW IQOMAH</p>
+                    <p id="iqomahFontPreview" style="color:#DC2626;text-shadow:0 0 20px #DC2626;" class="font-orbitron text-4xl">01:23</p>
+                </div>
+            </div>
+
+            <!-- Beep Sound -->
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <div>
+                    <span class="text-sm text-white/70">Suara Beep Triple</span>
+                    <p class="text-[10px] text-white/35">beep...beep...beep setiap detik</p>
+                </div>
+                <div class="toggle-switch active" id="toggleIqomahBeep"></div>
+            </div>
+        </div>
+
+        <!-- Iqomah Minutes After Adhan -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Waktu Iqomah (setelah Adhan)</span>
+            </div>
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Durasi</label>
+                    <span id="iqomahMinutesValue" class="text-xs text-amber-400 font-mono">10 menit</span>
+                </div>
+                <input type="range" id="iqomahMinutesSlider" min="1" max="20" step="1" value="10" class="w-full">
+            </div>
+            <div class="grid grid-cols-5 gap-1.5">
+                <button class="iqomah-quick-btn p-1.5 rounded border border-white/10 text-xs text-white/60" data-minutes="1">1'</button>
+                <button class="iqomah-quick-btn p-1.5 rounded border border-white/10 text-xs text-white/60" data-minutes="3">3'</button>
+                <button class="iqomah-quick-btn p-1.5 rounded border border-white/10 text-xs text-white/60" data-minutes="5">5'</button>
+                <button class="iqomah-quick-btn p-1.5 rounded border border-amber-500/50 bg-amber-500/10 text-xs" data-minutes="10">10'</button>
+                <button class="iqomah-quick-btn p-1.5 rounded border border-white/10 text-xs text-white/60" data-minutes="15">15'</button>
+            </div>
+        </div>
+
+        <!-- ==================== RUNNING TEXT SETTINGS ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                </svg>
+                <span>Teks Berjalan</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <button class="running-animation-btn active p-2 rounded-lg border border-amber-500/50 bg-amber-500/10 text-xs" data-animation="scroll-left">Geser Kiri</button>
+                <button class="running-animation-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-animation="scroll-right">Geser Kanan</button>
+                <button class="running-animation-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-animation="alternate">Bolak-balik</button>
+                <button class="running-animation-btn p-2 rounded-lg border border-white/10 text-xs text-white/60" data-animation="fade">Fade</button>
+            </div>
+            <div class="mb-3">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs uppercase tracking-wider text-white/40">Kecepatan</label>
+                    <span id="runningSpeedValue" class="text-xs text-amber-400 font-mono">25s</span>
+                </div>
+                <input type="range" id="runningSpeed" min="5" max="60" step="1" value="25" class="w-full">
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <span class="text-sm text-white/70">Tampilkan</span>
+                <div class="toggle-switch active" id="toggleAnnouncement"></div>
+            </div>
+        </div>
+
+        <!-- ==================== THEME & DISPLAY OPTIONS ==================== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                </svg>
+                <span>Tema & Tampilan Lainnya</span>
+            </div>
+
+            <!-- Theme Selection -->
+            <div class="space-y-2 mb-4">
+                <button class="theme-select-btn w-full p-3 rounded-lg border border-amber-500/50 bg-amber-500/10 text-left flex items-center gap-3" data-theme="haramain">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-br from-black to-amber-900"></span>
+                    <div><p class="text-sm font-medium">Haramain</p><p class="text-xs text-white/40">Saudi Arabia</p></div>
+                </button>
+                <button class="theme-select-btn w-full p-3 rounded-lg border border-white/10 hover:border-white/30 text-left flex items-center gap-3" data-theme="ottoman">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-br from-slate-900 to-teal-900"></span>
+                    <div><p class="text-sm font-medium text-white/70">Ottoman</p><p class="text-xs text-white/40">Turkey</p></div>
+                </button>
+                <button class="theme-select-btn w-full p-3 rounded-lg border border-white/10 hover:border-white/30 text-left flex items-center gap-3" data-theme="madinah">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-950 to-blue-900"></span>
+                    <div><p class="text-sm font-medium text-white/70">Madinah Night</p><p class="text-xs text-white/40">Saudi Arabia</p></div>
+                </button>
+                <button class="theme-select-btn w-full p-3 rounded-lg border border-white/10 hover:border-white/30 text-left flex items-center gap-3" data-theme="nusantara">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-br from-green-950 to-green-900"></span>
+                    <div><p class="text-sm font-medium text-white/70">Nusantara</p><p class="text-xs text-white/40">Indonesia</p></div>
+                </button>
+                <button class="theme-select-btn w-full p-3 rounded-lg border border-white/10 hover:border-white/30 text-left flex items-center gap-3" data-theme="ramadhan">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-br from-slate-950 to-yellow-900"></span>
+                    <div><p class="text-sm font-medium text-white/70">Ramadhan Special</p><p class="text-xs text-white/40">Seasonal</p></div>
+                </button>
+            </div>
+
+            <!-- Display Toggles -->
+            <div class="space-y-3 border-t border-white/5 pt-3">
+                <div class="flex items-center justify-between"><span class="text-sm text-white/70">Tanggal Hijriyah</span><div class="toggle-switch active" id="toggleHijri"></div></div>
+                <div class="flex items-center justify-between"><span class="text-sm text-white/70">Hitung Mundur</span><div class="toggle-switch active" id="toggleCountdown"></div></div>
+                <div class="flex items-center justify-between"><span class="text-sm text-white/70">Suara Alarm</span><div class="toggle-switch active" id="toggleSound"></div></div>
+            </div>
+        </div>
+
+        <!-- Announcement Text Editor -->
+        <div class="settings-section">
+            <h3 class="text-sm font-semibold text-white/70 mb-3">Teks Pengumuman</h3>
+            <textarea id="announcementInput" rows="3" 
+                      class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-amber-500/50 resize-none"
+                      placeholder="Masukkan teks pengumuman...">Assalamu'alaikum Warahmatullahi Wabarakatuh — Selamat datang di Masjid Jami Al Ikhlas Petukangan Selatan.</textarea>
+        </div>
+
+        <!-- Save Button -->
+        <button id="saveSettings" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-black font-semibold tracking-wide hover:from-amber-500 hover:to-amber-400 transition-all">
+            Simpan Pengaturan
+        </button>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main id="mainContent" class="pt-20 pb-12 px-4 min-h-screen">
+
+    <!-- Main TV Display -->
+    <div class="tv-screen theme-haramain mx-auto max-w-[1600px] shadow-2xl shadow-black/50" id="mainDisplay">
+        
+        <!-- Theme Decorations -->
+        <div id="themeDecorations"></div>
+
+        <!-- Normal Display Content -->
+        <div id="normalDisplayContent" class="relative z-10 h-full grid gap-4 md:gap-6" style="grid-template-columns: calc(100% - var(--sidebar-width)) var(--sidebar-width);">
+            
+            <!-- LEFT: Main Display Area -->
+            <div class="flex flex-col justify-between min-h-0 p-4 md:p-6 lg:p-8">
+                
+                <!-- Mosque Name Header -->
+                <div class="text-center order-1">
+                    <p class="font-amiri text-base md:text-lg lg:text-xl text-white/55" id="mosqueNameArabic">مَسْجِد جَامِع الإِخْلَاص</p>
+                    <p class="font-cormorant text-xs md:text-sm tracking-[0.3em] uppercase text-white/35 mt-3" id="mosqueNameLatin">MASJID JAMI AL IKHLAS PETUKANGAN SELATAN</p>
+                </div>
+
+                <!-- Main Clock Display -->
+                <div class="text-center py-1 md:py-2 lg:py-3 order-2 flex-shrink-0" id="clockContainer">
+                    
+                    <!-- Digital Clock -->
+                    <div id="digitalClock" class="inline-block relative">
+                        <div class="absolute inset-0 bg-amber-500/10 blur-[80px] rounded-full pointer-events-none" id="clockGlow"></div>
+                        <time class="clock-digital clock-custom-font block relative" id="mainClock" style="color: #C9A84C;">00:00:00</time>
+                    </div>
+
+                    <!-- Analog Clock -->
+                    <div id="analogClock" class="hidden inline-block">
+                        <div class="analog-clock" id="analogClockFace">
+                            <div class="clock-hand hour-hand" id="hourHand"></div>
+                            <div class="clock-hand minute-hand" id="minuteHand"></div>
+                            <div class="clock-hand second-hand" id="secondHand"></div>
+                            <div class="clock-center"></div>
+                        </div>
+                    </div>
+
+                    <!-- Date Display -->
+                    <div class="mt-4 space-y-3" id="dateContainer">
+                        <p class="font-cormorant text-base md:text-lg text-white/60 tracking-wider" id="gregorianDate"></p>
+                        <p class="font-amiri text-lg md:text-xl text-amber-500/70" id="hijriDate"></p>
+                    </div>
+                </div>
+
+                <!-- Next Prayer / Countdown Card -->
+                <div class="order-3" id="nextPrayerCard">
+                    <div id="normalPrayerCard" class="rounded-xl p-4 md:p-5 backdrop-blur-sm w-fit mx-auto" style="background: var(--prayer-card-bg); border: 1px solid var(--prayer-card-border);">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="min-w-0">
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/35 mb-1">Sholat Berikutnya</p>
+                                <p class="font-amiri text-2xl md:text-3xl text-amber-400 truncate" id="nextPrayerArabic">المَغْرِب</p>
+                                <p class="font-cormorant text-base text-white/60 mt-0.5" id="nextPrayerLatin">MAGHRIB</p>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-[10px] uppercase tracking-wider text-white/35 mb-1">Hitung Mundur</p>
+                                <p class="font-orbitron text-2xl md:text-3xl font-bold text-white" id="countdownTimer">02:34:18</p>
+                                <p class="text-xs text-amber-500/70 mt-1" id="iqomahInfo">Iqomah: 18:03</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="alertPrayerCard" class="hidden rounded-xl p-4 md:p-5 backdrop-blur-sm text-center" style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.4);">
+                        <p class="blink-text font-cormorant text-xl md:text-2xl text-red-400 mb-3" id="alertPrayerText">WAKTU SHOLAT MAGHRIB</p>
+                        <p class="font-orbitron text-4xl md:text-6xl font-bold countdown-alert" id="alertCountdown">04:32</p>
+                        <p class="text-sm text-red-300/60 mt-2">Sisa Waktu</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Prayer Schedule / Info Cards Sidebar -->
+            <div class="flex flex-col min-h-0 order-4 p-4 md:p-5 gap-3" id="rightSidebar" style="background: var(--sidebar-bg); border: 1px solid var(--sidebar-border); border-radius: 12px;">
+                
+                <!-- Prayer Schedule Section -->
+                <div id="prayerScheduleSection" class="flex-1 overflow-hidden flex flex-col">
+                    <div class="rounded-xl backdrop-blur-sm flex-1 overflow-hidden flex flex-col" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);">
+                        <div class="diamond-divider mb-3"><div class="diamond-icon"></div></div>
+                        <p class="text-[10px] uppercase tracking-[0.25em] text-white/25 text-center mb-3">Jadwal Sholat Hari Ini</p>
+                        
+                        <div class="space-y-1.5 flex-1 overflow-y-auto px-1" id="prayerList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <!-- Adhan Mode Content -->
+        <div id="adhanModeContent" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center -mt-12 md:-mt-16">
+            <div class="adhan-display">
+                <p class="adhan-text-latin">A D H A N</p>
+                <p class="adhan-text-arabic" id="adhanPrayerName">المَغْرِب</p>
+                <p class="text-red-400 text-xl md:text-2xl font-bold tracking-wider mt-4" id="adhanCountdownLabel">Menuju Iqomah dalam:</p>
+                <p class="adhan-countdown" id="adhanCountdown" style="color: #DC2626 !important; font-size: 20rem !important; text-shadow: 0 0 40px #DC2626, 0 0 80px rgba(220,38,38,0.5);">03:00</p>
+            </div>
+        </div>
+
+        <!-- Iqomah Mode Content -->
+        <div id="iqomahModeContent" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black">
+            <p class="iqomah-label">I Q O M A H</p>
+            <p class="iqomah-countdown-display" id="iqomahCountdownDisplay">05:00</p>
+            <p class="iqomah-prayer-name" id="iqomahPrayerName">المَغْرِب</p>
+            
+            <div class="iqomah-beep-indicator" id="iqomahBeepIndicator">
+                <div class="iqomah-beep-dot"></div>
+                <div class="iqomah-beep-dot"></div>
+                <div class="iqomah-beep-dot"></div>
+            </div>
+        </div>
+
+    </div> <!-- Penutup tv-screen -->
+    
+    <!-- Running Text Bar di luar tv-screen agar tidak ketutup konten lain -->
+    <div class="fixed bottom-0 left-0 right-0 h-10 md:h-12 flex items-center overflow-hidden z-[100]" id="announcementBar" style="background: linear-gradient(90deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05)); border-top: 1px solid rgba(201,168,76,0.2); backdrop-filter: blur(8px);">
+        <div class="whitespace-nowrap px-4 running-text-scroll-left" id="announcementText" style="font-size: 14px; color: rgba(255,255,255,0.7);"></div>
+    </div>
+
+    <!-- Fullscreen Announcement Bar -->
+    <div class="hidden fixed bottom-0 left-0 right-0 h-10 md:h-12 flex items-center overflow-hidden z-[110]" id="fullscreenAnnouncementBar" style="background: linear-gradient(90deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05)); border-top: 1px solid rgba(201,168,76,0.2); backdrop-filter: blur(8px);">
+        <div class="whitespace-nowrap px-4 running-text-scroll-left" id="fullscreenAnnouncementText" style="font-size: 14px; color: rgba(255,255,255,0.7);"></div>
+    </div>
+
+</main>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+        :root {
+            --bg-primary: #0a0a0a;
+            --accent-gold: #C9A84C;
+            --accent-red: #DC2626;
+            --clock-size: 200px;
+            --digital-font-size: 6.5rem;
+            --iqomah-font-size: 12rem;
+            --sidebar-width: 38%;
+            --sidebar-bg: rgba(0,0,0,0.4);
+            --sidebar-border: rgba(255,255,255,0.06);
+            --prayer-card-bg: rgba(201,168,76,0.08);
+            --prayer-card-border: rgba(201,168,76,0.2);
+            --mosque-name-font: 'Cormorant Garamond', serif;
+            --mosque-name-size: 1rem;
+            --date-font: 'Cormorant Garamond', serif;
+            --date-size: 1rem;
+            --date-opacity: 0.6;
+            --date-color: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #050505;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-amiri { font-family: 'Amiri', serif; }
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-orbitron { font-family: 'Orbitron', monospace; }
+        .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+        .font-teko { font-family: 'Teko', sans-serif; }
+        .font-monoton { font-family: 'Monoton', cursive; }
+
+        /* Mosque Name & Date Styling */
+        #mosqueNameArabic {
+            font-family: 'Amiri', serif;
+        }
+
+        #mosqueNameLatin {
+            font-family: var(--mosque-name-font);
+            font-size: var(--mosque-name-size);
+            transition: all 0.3s ease;
+        }
+
+        #gregorianDate {
+            font-family: var(--date-font);
+            font-size: var(--date-size);
+            color: var(--date-color);
+            opacity: var(--date-opacity);
+            transition: all 0.3s ease;
+        }
+
+        #hijriDate {
+            font-family: 'Amiri', serif;
+            font-size: var(--date-size);
+            color: var(--date-color);
+            opacity: var(--date-opacity);
+            transition: all 0.3s ease;
+        }
+
+        /* TV Screen Container */
+        .tv-screen {
+            aspect-ratio: 16/9;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.5s ease;
+        }
+
+        /* Theme Backgrounds */
+        .theme-haramain {
+            background: linear-gradient(135deg, #000000 0%, #1a1510 50%, #0d0a07 100%);
+        }
+        .theme-haramain::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L37 23L60 30L37 37L30 60L23 37L0 30L23 23Z' fill='%23C9A84C' fill-opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .theme-ottoman {
+            background: linear-gradient(160deg, #0d1b2a 0%, #1b3a4b 50%, #0a1628 100%);
+        }
+
+        .theme-madinah {
+            background: linear-gradient(170deg, #080c18 0%, #0f1829 50%, #060a12 100%);
+        }
+
+        .theme-nusantara {
+            background: linear-gradient(145deg, #1a2418 0%, #2d3b28 40%, #1c2616 100%);
+        }
+
+        .theme-ramadhan {
+            background: linear-gradient(180deg, #0a0f1a 0%, #141c2e 50%, #080c14 100%);
+        }
+
+        /* Clock Styles */
+        .clock-digital {
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 80px rgba(201,168,76,0.4);
+        }
+
+        .clock-custom-font {
+            font-family: var(--digital-clock-font, 'Orbitron'), monospace;
+            font-size: var(--digital-font-size, 6.5rem);
+        }
+
+        /* Analog Clock */
+        .analog-clock {
+            width: var(--clock-size);
+            height: var(--clock-size);
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(circle, rgba(20,20,20,0.95) 0%, rgba(10,10,10,0.98) 100%);
+            box-shadow: 
+                0 0 60px rgba(201,168,76,0.2),
+                inset 0 0 40px rgba(0,0,0,0.8),
+                0 0 0 4px rgba(201,168,76,0.3);
+        }
+
+        .analog-clock::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 1px solid rgba(201,168,76,0.15);
+        }
+
+        .clock-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+        }
+
+        .hour-hand {
+            width: 4px;
+            height: 28%;
+            background: linear-gradient(to top, #C9A84C, #E8D48B);
+            margin-left: -2px;
+        }
+
+        .minute-hand {
+            width: 3px;
+            height: 38%;
+            background: linear-gradient(to top, #C9A84C, #fff);
+            margin-left: -1.5px;
+        }
+
+        .second-hand {
+            width: 1.5px;
+            height: 42%;
+            background: #DC2626;
+            margin-left: -0.75px;
+        }
+
+        .clock-center {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #C9A84C;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .clock-mark {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(201,168,76,0.6);
+            top: 6px;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .clock-mark.major {
+            height: 14px;
+            width: 3px;
+            background: #C9A84C;
+            margin-left: -1.5px;
+        }
+
+        .clock-number {
+            position: absolute;
+            font-weight: bold;
+            text-align: center;
+            transform-origin: center;
+            color: #C9A84C;
+            font-size: calc(var(--clock-size) * 0.11);
+        }
+
+        .clock-number.arabic-num { font-family: 'Tajawal', sans-serif; }
+        .clock-number.roman-num { font-family: 'Cinzel', serif; font-size: calc(var(--clock-size) * 0.09); }
+        .clock-number.hindi-num { font-family: 'Amiri', serif; direction: rtl; }
+
+        /* ==================== IQOMAH MODE (FULL SCREEN BLACK) ==================== */
+        .iqomah-mode-active {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 99999 !important;
+            border-radius: 0 !important;
+            max-width: none !important;
+            aspect-ratio: auto !important;
+            background: #000000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .iqomah-countdown-display {
+            font-family: var(--iqomah-font-family, 'Orbitron'), monospace;
+            font-size: var(--iqomah-font-size, 12rem);
+            color: #DC2626;
+            text-shadow: 
+                0 0 40px #DC2626,
+                0 0 80px rgba(220,38,38,0.5),
+                0 0 120px rgba(220,38,38,0.3);
+            animation: iqomahPulse 1s ease-in-out infinite;
+            line-height: 1;
+        }
+
+        @keyframes iqomahPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(0.995); }
+        }
+
+        .iqomah-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.8em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .iqomah-prayer-name {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            color: #C9A84C;
+            margin-top: 1.5rem;
+        }
+
+        .iqomah-beep-indicator {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .iqomah-beep-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #DC2626;
+            animation: beepDot 0.5s ease-in-out infinite;
+        }
+
+        .iqomah-beep-dot:nth-child(2) { animation-delay: 0.15s; }
+        .iqomah-beep-dot:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes beepDot {
+            0%, 100% { opacity: 0.3; transform: scale(0.7); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* ADHAN MODE (before Iqomah) */
+        .adhan-mode-active {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 99998 !important;
+            border-radius: 0 !important;
+            max-width: none !important;
+            aspect-ratio: auto !important;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1510 50%, #0a0a0a 100%) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .adhan-display {
+            text-align: center;
+        }
+
+        .adhan-text-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 4rem;
+            color: #C9A84C;
+            text-shadow: 0 0 30px rgba(201,168,76,0.5);
+            margin-bottom: 1rem;
+        }
+
+        .adhan-text-latin {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .adhan-countdown {
+            font-family: 'Orbitron', monospace;
+            font-size: 5rem;
+            color: #C9A84C;
+            margin-top: 2rem;
+            text-shadow: 0 0 20px rgba(201,168,76,0.4);
+        }
+
+        /* Countdown Red Alert for normal mode */
+        .countdown-alert {
+            color: #DC2626 !important;
+            animation: pulseRed 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { opacity: 1; text-shadow: 0 0 20px #DC2626, 0 0 40px #DC2626; }
+            50% { opacity: 0.7; text-shadow: 0 0 40px #DC2626, 0 0 80px #DC2626; }
+        }
+
+        /* Blinking Prayer Warning */
+        @keyframes blinkWarning {
+            0%, 49% { opacity: 1; }
+            50%, 99% { opacity: 0; }
+        }
+
+        .blink-text {
+            animation: blinkWarning 1s step-end infinite;
+        }
+
+        /* Running Text Animations */
+        @keyframes scrollLeft {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes scrollRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes scrollAlternate {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(calc(-100% + 100vw)); }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .running-text-scroll-left { animation: scrollLeft var(--running-speed, 25s) linear infinite; }
+        .running-text-scroll-right { animation: scrollRight var(--running-speed, 25s) linear infinite; }
+        .running-text-alternate { animation: scrollAlternate var(--running-speed, 15s) ease-in-out infinite alternate; }
+        .running-text-fade { animation: fadeInOut var(--running-speed, 8s) ease-in-out infinite; white-space: normal !important; text-align: center; }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -480px;
+            width: 480px;
+            max-width: 95vw;
+            height: 100vh;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(201,168,76,0.2);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .settings-panel.open { right: 0; }
+
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .settings-overlay.show { opacity: 1; pointer-events: auto; }
+
+        /* Fullscreen Mode */
+        .fullscreen-mode .settings-btn,
+        .fullscreen-mode header { display: none !important; }
+
+        .fullscreen-mode #mainContent {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            min-height: 100vh !important;
+        }
+
+        .fullscreen-mode .tv-screen {
+            border-radius: 0;
+            max-width: 100%;
+            height: 100vh;
+            aspect-ratio: auto;
+        }
+
+        /* Fullscreen Button States */
+        #fullscreenBtn.active {
+            background: rgba(201, 168, 76, 0.2) !important;
+            border-color: rgba(201, 168, 76, 0.5) !important;
+            color: #C9A84C;
+        }
+
+        #fullscreenBtn.active svg {
+            color: #C9A84C;
+        }
+
+        /* Prayer Row States */
+        .prayer-row-upcoming {
+            background: linear-gradient(90deg, var(--prayer-card-bg) 0%, transparent 100%) !important;
+            border-left: 3px solid var(--accent-gold) !important;
+        }
+
+        .prayer-row-active-now {
+            background: linear-gradient(90deg, rgba(220,38,38,0.25) 0%, transparent 100%) !important;
+            border-left: 3px solid #DC2626 !important;
+            box-shadow: 0 0 20px rgba(220,38,38,0.2);
+        }
+
+        .prayer-row-passed { opacity: 0.35; }
+
+        /* Diamond Divider */
+        .diamond-divider { display: flex; align-items: center; gap: 16px; }
+        .diamond-divider::before,
+        .diamond-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+        }
+        .diamond-icon {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gold);
+            transform: rotate(45deg);
+        }
+
+        /* Custom Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(201,168,76,0.5);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .toggle-switch.active { background: var(--accent-gold); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s ease;
+        }
+        .toggle-switch.active::after { transform: translateX(22px); }
+
+        /* Select Dropdown */
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C9A84C'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* Settings Section Card */
+        .settings-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .settings-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Preview Box */
+        .preview-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed rgba(201,168,76,0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Prayer Time Editor Item */
+        .prayer-time-editor-item {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prayer-time-editor-item input[type="time"] {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .remove-prayer-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(220,38,38,0.2);
+            border: 1px solid rgba(220,38,38,0.4);
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .remove-prayer-btn:hover {
+            background: rgba(220,38,38,0.4);
+        }
+
+        /* Info Card Editor */
+        .info-editor-item {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 3px; }
+
+        /* Running Text Fix - Tidak Ketutup Konten Lain */
+        #announcementBar, #fullscreenAnnouncementBar {
+            pointer-events: none;
+            z-index: 100 !important;
+        }
+
+        #mainContent {
+            padding-bottom: 3rem;
+        }
+
+        .order-3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            :root { 
+                --clock-size: 160px;
+                --digital-font-size: 4rem;
+                --iqomah-font-size: 6rem;
+                --sidebar-width: 100%;
+            }
+            
+            .settings-panel { width: 100%; right: -100%; }
+            .iqomah-countdown-display { font-size: 5rem !important; }
+            .iqomah-label { font-size: 1rem; letter-spacing: 0.4em; }
+            .iqomah-prayer-name { font-size: 1.5rem; }
+            .adhan-text-arabic { font-size: 2.5rem; }
+            .adhan-text-latin { font-size: 1.2rem; }
+            .adhan-countdown { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --digital-font-size: 3rem;
+                --iqomah-font-size: 4rem;
+            }
+        }
+/* Adhan Mode - Ukuran Lebih Besar & Warna Merah */
+#adhanCountdownLabel {
+    color: #DC2626 !important;
+    font-size: 1.8rem !important;
+    font-weight: bold !important;
+    letter-spacing: 0.1em !important;
+    margin-top: 1rem !important;
+}
+
+#adhanCountdown {
+    color: #DC2626 !important;
+    font-size: 8rem !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 40px #DC2626, 0 0 80px rgba(220,38,38,0.5) !important;
+    animation: pulseRed 1s ease-in-out infinite !important;
+}
+
+@media (max-width: 768px) {
+    #adhanCountdownLabel {
+        font-size: 1.2rem !important;
+    }
+    #adhanCountdown {
+        font-size: 4rem !important;
+    }
+}
