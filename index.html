@@ -73,79 +73,95 @@
         </div>
 
         <!-- ==================== MOSQUE NAME & DATE SETTINGS ==================== -->
-        <div class="settings-section">
-            <div class="settings-section-title">
-                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 21H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-3h2l2 3h4a2 2 0 012 2v12a2 2 0 01-2 2z"/>
-                </svg>
-                <span>Nama Masjid & Tanggal</span>
+<div class="settings-section">
+    <div class="settings-section-title">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M19 21H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-3h2l2 3h4a2 2 0 012 2v12a2 2 0 01-2 2z"/>
+        </svg>
+        <span>Nama Masjid & Tanggal</span>
+    </div>
+
+    <!-- Mosque Name -->
+    <div class="mb-4">
+        <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Indonesia)</label>
+        <input type="text" id="mosqueNameInput" value="Masjid Jami Al Ikhlas Petukangan Selatan" 
+               class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3">
+        
+        <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Arab)</label>
+        <input type="text" id="mosqueNameArabicInput" value="مَسْجِد جَامِع الإِخْلَاص" 
+               class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3 font-amiri text-right" dir="rtl">
+        
+        <!-- Mosque Name Font -->
+        <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Nama Masjid</label>
+        <select id="mosqueNameFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
+            <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+            <option value="'Cinzel', serif">Cinzel</option>
+            <option value="'Playfair Display', serif">Playfair Display</option>
+            <option value="'Tajawal', sans-serif">Tajawal</option>
+            <option value="'Rajdhani', sans-serif">Rajdhani</option>
+        </select>
+
+        <!-- Mosque Name Size -->
+        <div class="flex justify-between items-center mb-2">
+            <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Nama Masjid</label>
+            <span id="mosqueNameSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
+        </div>
+        <input type="range" id="mosqueNameSize" min="0.5" max="3" step="0.1" value="1" class="w-full">
+
+        <!-- TAMBAHAN: Warna Nama Masjid (Latin & Arab) -->
+        <div class="grid grid-cols-2 gap-3 mt-4">
+            <div>
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Nama (Latin)</label>
+                <input type="color" id="mosqueNameColor" value="#ffffff" 
+                       class="w-full h-10 rounded-lg bg-black/50 border border-white/10 cursor-pointer hover:border-amber-500/50 transition-all">
+                <p class="text-[10px] text-white/35 mt-1 text-center">Putih Terang</p>
             </div>
-
-            <!-- Mosque Name -->
-            <div class="mb-4">
-                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Indonesia)</label>
-                <input type="text" id="mosqueNameInput" value="Masjid Jami Al Ikhlas Petukangan Selatan" 
-                       class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3">
-                
-                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Nama Masjid (Bahasa Arab)</label>
-                <input type="text" id="mosqueNameArabicInput" value="مَسْجِد جَامِع الإِخْلَاص" 
-                       class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500/50 mb-3 font-amiri text-right" dir="rtl">
-                
-                <!-- Mosque Name Font -->
-                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Nama Masjid</label>
-                <select id="mosqueNameFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
-                    <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-                    <option value="'Cinzel', serif">Cinzel</option>
-                    <option value="'Playfair Display', serif">Playfair Display</option>
-                    <option value="'Tajawal', sans-serif">Tajawal</option>
-                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
-                </select>
-
-                <!-- Mosque Name Size -->
-                <div class="flex justify-between items-center mb-2">
-                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Nama Masjid</label>
-                    <span id="mosqueNameSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
-                </div>
-                <input type="range" id="mosqueNameSize" min="0.5" max="3" step="0.1" value="1" class="w-full">
-            </div>
-
-            <!-- Date Settings -->
-            <div class="border-t border-white/5 pt-4">
-                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Tanggal & Hari</label>
-                <select id="dateFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
-                    <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-                    <option value="'Cinzel', serif">Cinzel</option>
-                    <option value="'Playfair Display', serif">Playfair Display</option>
-                    <option value="'Tajawal', sans-serif">Tajawal</option>
-                    <option value="'Rajdhani', sans-serif">Rajdhani</option>
-                </select>
-
-                <!-- Date Size -->
-                <div class="flex justify-between items-center mb-2">
-                    <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Tanggal & Hari</label>
-                    <span id="dateSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
-                </div>
-                <input type="range" id="dateSize" min="0.5" max="2.5" step="0.1" value="1" class="w-full">
-
-                <!-- Date Opacity -->
-                <div class="flex items-center justify-between mt-3">
-                    <span class="text-sm text-white/70">Transparansi Tanggal</span>
-                    <div class="toggle-switch" id="toggleDateOpacity"></div>
-                </div>
-
-                <!-- Date Color -->
-                <div class="mt-4">
-                    <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Tanggal & Hari</label>
-                    <select id="dateColor" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
-                        <option value="#ffffff">Putih Terang</option>
-                        <option value="#F5D78A">Emas Cerah</option>
-                        <option value="#7DE9B5">Tosca Terang</option>
-                        <option value="#80DFFF">Biru Terang</option>
-                        <option value="#F3FF7D">Kuning Cerah</option>
-                    </select>
-                </div>
+            <div>
+                <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Nama (Arab)</label>
+                <input type="color" id="mosqueNameArabicColor" value="#C9A84C" 
+                       class="w-full h-10 rounded-lg bg-black/50 border border-white/10 cursor-pointer hover:border-amber-500/50 transition-all">
+                <p class="text-[10px] text-white/35 mt-1 text-center">Emas Cerah</p>
             </div>
         </div>
+    </div>
+
+    <!-- Date Settings -->
+    <div class="border-t border-white/5 pt-4">
+        <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Font Tanggal & Hari</label>
+        <select id="dateFontFamily" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm mb-3">
+            <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+            <option value="'Cinzel', serif">Cinzel</option>
+            <option value="'Playfair Display', serif">Playfair Display</option>
+            <option value="'Tajawal', sans-serif">Tajawal</option>
+            <option value="'Rajdhani', sans-serif">Rajdhani</option>
+        </select>
+
+        <!-- Date Size -->
+        <div class="flex justify-between items-center mb-2">
+            <label class="text-xs uppercase tracking-wider text-white/40">Ukuran Tanggal & Hari</label>
+            <span id="dateSizeValue" class="text-xs text-amber-400 font-mono">1rem</span>
+        </div>
+        <input type="range" id="dateSize" min="0.5" max="2.5" step="0.1" value="1" class="w-full">
+
+        <!-- Date Opacity -->
+        <div class="flex items-center justify-between mt-3">
+            <span class="text-sm text-white/70">Transparansi Tanggal</span>
+            <div class="toggle-switch" id="toggleDateOpacity"></div>
+        </div>
+
+        <!-- Date Color -->
+        <div class="mt-4">
+            <label class="text-xs uppercase tracking-wider text-white/40 block mb-2">Warna Tanggal & Hari</label>
+            <select id="dateColor" class="custom-select w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-sm">
+                <option value="#ffffff">Putih Terang</option>
+                <option value="#F5D78A">Emas Cerah</option>
+                <option value="#7DE9B5">Tosca Terang</option>
+                <option value="#80DFFF">Biru Terang</option>
+                <option value="#F3FF7D">Kuning Cerah</option>
+            </select>
+        </div>
+    </div>
+</div>
 
         <!-- ==================== CLOCK TYPE SELECTION ==================== -->
         <div class="settings-section">

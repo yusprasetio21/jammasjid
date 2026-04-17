@@ -8,6 +8,8 @@ const CONFIG = {
     mosqueNameArabic: 'مَسْجِد جَامِع الإِخْلَاص',
     mosqueNameFontFamily: "'Cormorant Garamond', serif",
     mosqueNameFontSize: 1,
+    mosqueNameColor: '#ffffff',        // TAMBAHKAN: Warna nama masjid Latin
+    mosqueNameArabicColor: '#C9A84C',  // TAMBAHKAN: Warna nama masjid Arab
     dateOpacity: false, // true = semi-transparent, false = normal
     dateColor: '#ffffff',
     dateFontFamily: "'Cormorant Garamond', serif",
@@ -534,6 +536,15 @@ function applySidebarSettings() {
 function applyMosqueNameSettings() {
     document.documentElement.style.setProperty('--mosque-name-font', CONFIG.mosqueNameFontFamily);
     document.documentElement.style.setProperty('--mosque-name-size', `${CONFIG.mosqueNameFontSize}rem`);
+    
+    // TAMBAHKAN: Warna nama masjid
+    document.documentElement.style.setProperty('--mosque-name-color', CONFIG.mosqueNameColor);
+    document.documentElement.style.setProperty('--mosque-name-arabic-color', CONFIG.mosqueNameArabicColor);
+    
+    const latinEl = document.getElementById('mosqueNameLatin');
+    const arabicEl = document.getElementById('mosqueNameArabic');
+    if (latinEl) latinEl.style.color = CONFIG.mosqueNameColor;
+    if (arabicEl) arabicEl.style.color = CONFIG.mosqueNameArabicColor;
 }
 
 function applyDateSettings() {
@@ -876,6 +887,11 @@ function closeSettings() {
 function saveAllSettings() {
     CONFIG.mosqueName = document.getElementById('mosqueNameInput').value;
     CONFIG.mosqueNameArabic = document.getElementById('mosqueNameArabicInput').value;
+    CONFIG.mosqueNameColor = document.getElementById('mosqueNameColor').value;
+    CONFIG.mosqueNameArabicColor = document.getElementById('mosqueNameArabicColor').value;
+    CONFIG.dateFontFamily = document.getElementById('dateFontFamily').value;
+    CONFIG.dateFontSize = parseFloat(document.getElementById('dateSize').value);
+    CONFIG.dateColor = document.getElementById('dateColor').value;
     CONFIG.announcement = document.getElementById('announcementInput').value;
     CONFIG.mosqueNameFontFamily = document.getElementById('mosqueNameFontFamily').value;
     CONFIG.mosqueNameFontSize = parseFloat(document.getElementById('mosqueNameSize').value);
@@ -913,7 +929,13 @@ function saveAllSettings() {
 function loadSettings() {
     try {
         const saved = localStorage.getItem('masjidScreenConfig');
-        if (saved) Object.assign(CONFIG, JSON.parse(saved));
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.assign(CONFIG, parsed);
+            // TAMBAHKAN: Pastikan properti warna ada (untuk backward compatibility)
+            if (!CONFIG.mosqueNameColor) CONFIG.mosqueNameColor = '#ffffff';
+            if (!CONFIG.mosqueNameArabicColor) CONFIG.mosqueNameArabicColor = '#C9A84C';
+        }
     } catch(e) {}
 }
 
@@ -996,6 +1018,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mosqueNameFontFamily').value = CONFIG.mosqueNameFontFamily;
     document.getElementById('mosqueNameSize').value = CONFIG.mosqueNameFontSize;
     document.getElementById('mosqueNameSizeValue').textContent = `${CONFIG.mosqueNameFontSize}rem`;
+    
+    // TAMBAHKAN: Set nilai warna nama masjid dari CONFIG
+    const mosqueNameColorInput = document.getElementById('mosqueNameColor');
+    const mosqueNameArabicColorInput = document.getElementById('mosqueNameArabicColor');
+    
+    if (mosqueNameColorInput) {
+        mosqueNameColorInput.value = CONFIG.mosqueNameColor || '#ffffff';
+    }
+    if (mosqueNameArabicColorInput) {
+        mosqueNameArabicColorInput.value = CONFIG.mosqueNameArabicColor || '#C9A84C';
+    }
+    
     document.getElementById('dateFontFamily').value = CONFIG.dateFontFamily;
     document.getElementById('dateSize').value = CONFIG.dateFontSize;
     document.getElementById('dateSizeValue').textContent = `${CONFIG.dateFontSize}rem`;
@@ -1120,6 +1154,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add/Remove prayer time
     document.getElementById('addPrayerTimeBtn').addEventListener('click', addNewPrayerTime);
+    
+    // TAMBAHKAN: Event listeners untuk warna nama masjid
+    if (mosqueNameColorInput) {
+        mosqueNameColorInput.addEventListener('change', (e) => {
+            CONFIG.mosqueNameColor = e.target.value;
+            applyMosqueNameSettings();
+        });
+    }
+    
+    if (mosqueNameArabicColorInput) {
+        mosqueNameArabicColorInput.addEventListener('change', (e) => {
+            CONFIG.mosqueNameArabicColor = e.target.value;
+            applyMosqueNameSettings();
+        });
+    }
     
     // Mosque Name & Date Settings
     document.getElementById('mosqueNameFontFamily').addEventListener('change', e => {
