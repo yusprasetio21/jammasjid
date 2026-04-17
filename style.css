@@ -663,3 +663,13 @@
         font-size: 4rem !important;
     }
 }
+.active-prayer {
+  background: rgba(201,168,76,0.18);
+  border: 1px solid rgba(201,168,76,0.5);
+  box-shadow: 0 0 20px rgba(201,168,76,0.4);
+  transform: scale(1.03);
+}
+
+.inactive-prayer {
+  opacity: 0.5;
+}

@@ -865,6 +865,7 @@ function updateDisplay() {
     
     renderPrayerList();
     renderNextPrayerBoxes();
+    renderAdditionalCards();
     updateStatusIndicator();
 }
 
@@ -1315,3 +1316,46 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = `@keyframes float{0%,100%{transform:translateY(0) rotate(-15deg)}50%{transform:translateY(-8px) rotate(-12deg)}}`;
 document.head.appendChild(styleSheet);
 
+function renderAdditionalCards() {
+    const container = document.getElementById('otherPrayerCards');
+    if (!container) return;
+
+    detectPrayerStatus();
+
+    const mainPrayers = PRAYER_TIMES.filter(p => p.isMain);
+    const nextIndex = mainPrayers.findIndex(p => p.isNext);
+
+    if (nextIndex === -1) {
+        container.innerHTML = '';
+        return;
+    }
+
+    // Ambil 2 setelah next
+    const nextCards = [
+        mainPrayers[(nextIndex + 1) % mainPrayers.length],
+        mainPrayers[(nextIndex + 2) % mainPrayers.length]
+    ];
+
+    container.innerHTML = nextCards.map(prayer => `
+        <div class="rounded-xl p-4 md:p-5 backdrop-blur-sm w-full"
+            style="background: var(--prayer-card-bg); border: 1px solid var(--prayer-card-border);">
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-white/40 uppercase">
+                        Selanjutnya
+                    </p>
+                    <p class="text-lg font-semibold text-white">
+                        ${prayer.latin}
+                    </p>
+                </div>
+
+                <div class="text-right">
+                    <p class="font-orbitron text-xl text-amber-400">
+                        ${prayer.time}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
